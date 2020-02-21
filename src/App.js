@@ -11,7 +11,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       option: 1,
-			chord: "Major",
+			chord: "",
       note: "C",
       checked: false
     }
