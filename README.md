@@ -21,4 +21,4 @@ Simple metronome for time keeping.
 
 TODO: For some reason it starts on 0, so I gotta fix that.
 
-More stuff coming soon!
+More stuff coming soon! (Gotta add the other accidentals)
