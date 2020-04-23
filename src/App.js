@@ -1,77 +1,102 @@
-import React from 'react';
-import MusicNoteIcon from '@material-ui/icons/MusicNote';
-import {AppBar, Typography, Toolbar, Grid, Paper} from '@material-ui/core';
+import React from "react";
+import MusicNoteIcon from "@material-ui/icons/MusicNote";
+import { AppBar, Typography, Toolbar } from "@material-ui/core";
 
-import Selection from "./Selection";
-import Metronome from "./Metronome";
-import Fretboard from "./Fretboard";
+import Selection from "./components/Selection";
+import Fretboard from "./components/Fretboard";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       option: 1,
-			chord: "",
-      note: "C",
-      checked: false
-    }
+      chord: "1Major",
+      root: "C",
+      interval: false,
+    };
+    this.handleRootChange = this.handleRootChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
   }
 
   handleChange(event, id) {
-		this.setState({[id]: event.target.value}, () => {
-			//console.log(this.state);
-		});
+    var opt = event.target.value[0];
+    var val = event.target.value.substr(1);
+
+    this.setState({ chord: opt + val });
+    this.setState({ option: opt }, () => {
+      console.log(this.state);
+    });
   }
-  
+
+  handleRootChange(event, id) {
+    this.setState({ root: event.target.value }, () => {
+      console.log(this.state);
+    });
+  }
+
   handleCheck(event, id) {
-		this.setState({[id]: event.target.checked}, () => {
-			//console.log(this.state);
-		});
-	}
+    // Handle interval change
+    this.setState({ [id]: event.target.checked }, () => {
+      //console.log(this.state);
+    });
+  }
 
   render() {
     const option = this.state.option;
     const chord = this.state.chord;
-    const note = this.state.note;
-    const checked = this.state.checked;
+    const root = this.state.root;
+    const interval = this.state.interval;
 
     return (
       <div className="App">
-        <AppBar title="My App" position="static" style={{ background: '#102027'}}>
+        <AppBar
+          title="Fret Trainer"
+          position="static"
+          style={{ background: "#263238" }}
+        >
           <Toolbar>
-            <Typography variant="h6">
-              Fret Trainer
-            </Typography>
-            <MusicNoteIcon fontSize="large"/>
+            <Typography variant="h6">Fret Trainer</Typography>
+            <MusicNoteIcon fontSize="large" />
           </Toolbar>
         </AppBar>
-  
-        <Grid container
-          direction={'row'} 
-          justify={'center'}
-          spacing={5}  
-          style={{ background: '#e0e0e0', width: '100vw', height: '100vh', padding: 40}}
+
+        <div
+          className="wrapper"
+          style={{ width: "750px", margin: "0 auto", textAlign: "center" }}
         >
-          <Grid item sm={8}>
-            <Grid container spacing={5} direction={'column'}>
-              <Grid item>
-                <Paper style={{padding: 20, background: '#f5f5f5'}} elevation={3} square><Selection option={option} chord={chord} note={note} checked={checked} handleChange={this.handleChange} handleCheck={this.handleCheck}/></Paper>
-              </Grid>
-              <Grid item>
-                <Paper style={{padding: 20, background: '#f5f5f5'}} elevation={3} square><Fretboard option={option} chord={chord} note={note} checked={checked}/></Paper>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item>
-            <Paper style={{padding: 20, background: '#f5f5f5'}} elevation={3} square><Metronome/></Paper>
-          </Grid>
-        </Grid>
+          <div
+            className="fretboard"
+            style={{
+              margin: "45px 0",
+              width: "750px",
+            }}
+          >
+            <Fretboard
+              option={option}
+              chord={chord}
+              root={root}
+              interval={interval}
+            />
+          </div>
+          <div
+            className="menu"
+            style={{ width: "500px", display: "inline-block" }}
+          >
+            <Selection
+              option={option}
+              chord={chord}
+              root={root}
+              interval={interval}
+              handleChange={this.handleChange}
+              handleRootChange={this.handleRootChange}
+              handleCheck={this.handleCheck}
+            />
+          </div>
+        </div>
       </div>
     );
   }
-  
 }
 
 export default App;
